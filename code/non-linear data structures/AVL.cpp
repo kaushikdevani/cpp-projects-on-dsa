@@ -141,6 +141,16 @@ class AVL
             return x;
         }
 
+        TreeNode* recursiveSearch(TreeNode* r, int val)
+        {
+            if (r == NULL || r->value==val)
+                return r;
+            else if (val<r->value)
+                return recursiveSearch(r->left,val);
+            else if (val>r->value)
+                return recursiveSearch(r->right,val);
+        }
+
         TreeNode* insertNode(TreeNode* r, TreeNode* newNode)
         {
             if (r==NULL)
@@ -186,9 +196,73 @@ class AVL
                 r->right = rotateRight(r->right);//right-left imbalance
                 return rotateLeft(r);
             }
+            return r;
+        }
 
+        TreeNode* minValueNode(TreeNode* r)
+        {
+            TreeNode* current =r;
+            if (current == NULL)
+                return NULL;
+            else
+            {
+                while(current->left!=NULL)
+                {
+                    current = current->left;
+                }
+                return current;
+            }
+        }
+        TreeNode* deleteNode(TreeNode* r, int val)
+        {
+            if (r==NULL)
+                return NULL;
+            else if(val<r->value)
+                r->left = deleteNode(r->left,val);
+            else if (val>r->value)
+                r->right = deleteNode(r->right,val);
+            else
+            {
+                if (r->left==NULL)
+                {
+                    TreeNode* temp = r->right;
+                    delete r;
+                    return temp;
+                }
+                else if (r->right==NULL)
+                {
+                    TreeNode* temp = r->left;
+                    delete r;
+                    return temp;
+                }
+                else
+                {
+                    TreeNode* minValNode = minValueNode(r->right);
+                    r->value = minValNode->value;
+                    r->right= deleteNode(r->right,minValNode->value);
+                }
+            }
 
+            int bf = getBalanceFactor(r);
 
+            if (bf>1 && getBalanceFactor(r->left)>=0)
+            {
+                return rotateRight(r);//left-left imbalance
+            }
+            else if (bf<-1 && getBalanceFactor(r->right)<=0)
+            {
+                return rotateLeft(r);//right-right imbalance
+            }
+            else if (bf>1 && getBalanceFactor(r->left)<0)
+            {
+                r->left = rotateLeft(r->left); //left-right imbalance
+                return rotateRight(r);
+            }
+            else if (bf<-1 && getBalanceFactor(r->right)>0)
+            {
+                r->right = rotateRight(r->right);//right-left imbalance
+                return rotateLeft(r);
+            }
             return r;
         }
 };
@@ -219,25 +293,25 @@ int main()
                 node->value = value;
                 avl.root=avl.insertNode(avl.root,node);
                 break;
-            // case 2:
-            //     cout<<"Enter the value of TreeNode that you want to search: ";
-            //     cin>>value;
-            //     if(avl.iterativeSearch(value)==NULL)
-            //         cout<<"Given value is not in tree\n";
-            //     else   
-            //         cout<< "Value found in the tree.\n";
-            //     break;
-            // case 3:
-            //     cout<< "Enter the value that you want to delete: ";
-            //     cin>>value;
-            //     if (avl.iterativeSearch(value)!=NULL)
-            //     {
-            //         avl.deleteNode(avl.root,value);
-            //         cout<<"Value deleted\n";
-            //     }
-            //     else
-            //         cout<<"No node with given value exists\n";
-            //     break;
+            case 2:
+                cout<<"Enter the value of TreeNode that you want to search: ";
+                cin>>value;
+                if(avl.recursiveSearch(avl.root,value)==NULL)
+                    cout<<"Given value is not in tree\n";
+                else   
+                    cout<< "Value found in the tree.\n";
+                break;
+            case 3:
+                cout<< "Enter the value that you want to delete: ";
+                cin>>value;
+                if (avl.recursiveSearch(avl.root,value)!=NULL)
+                {
+                    avl.deleteNode(avl.root,value);
+                    cout<<"Value deleted\n";
+                }
+                else
+                    cout<<"No node with given value exists\n";
+                break;
             case 4:
                 cout<<"2D print-\n";
                 avl.print2D(avl.root,5);
