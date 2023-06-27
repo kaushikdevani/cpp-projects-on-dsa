@@ -1,3 +1,6 @@
+//linked with github
+
+
 #include <iostream>
 using namespace std;
 
