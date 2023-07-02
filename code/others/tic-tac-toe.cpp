@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+//This is a two player tic-tac-toe game run this code to start playing
+
 char ticks[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
 
 void print()
