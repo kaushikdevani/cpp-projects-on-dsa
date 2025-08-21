@@ -1,13 +1,10 @@
-# include <iostream>
-#include <stack>
+#include <iostream>
 using namespace std;
 
-int main()
-{
-    string s = "hiibro!";
-    string b = "added";
-    string d(1,'z');
-    string c = "("+d+s+")";
-    cout << c;
+int main(){
+    string name;
+    cout << "enter your name brother :";
+    cin >> name;
+    cout << "hello! " << name << " this is macbook speaking, what's up?";
     return 0;
 }
